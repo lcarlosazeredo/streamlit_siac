@@ -205,3 +205,13 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Ignorar o ambiente virtual
+.venv/
+
+# Ignorar a pasta de segredos! NUNCA envie sua chave de API!
+.streamlit/secrets.toml
+
+# Ignorar caches do Python
+__pycache__/
+*.pyc
