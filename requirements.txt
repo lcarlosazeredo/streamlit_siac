@@ -1,0 +1,14 @@
+# --- Frameworks Principais ---
+streamlit
+pandas
+langchain
+langchain-core
+langchain-community
+langchain-google-genai
+pydantic
+faiss-cpu
+google-generativeai
+matplotlib
+wordcloud
+nltk
+PyMuPDF
