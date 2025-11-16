@@ -207,7 +207,7 @@ marimo/_lsp/
 __marimo__/
 
 # Ignorar o ambiente virtual
-.venv/
+#.venv/
 
 # Ignorar a pasta de segredos! NUNCA envie sua chave de API!
 .streamlit/secrets.toml
