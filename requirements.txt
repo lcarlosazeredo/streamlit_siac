@@ -1,10 +1,13 @@
-# --- Frameworks Principais ---
-streamlit
-pandas
-langchain
-langchain-core
-langchain-community
+# --- A SUA CORREÇÃO (Obrigado!) ---
+# Força as versões < 0.3 para compatibilidade com a Google
+langchain<0.3
+langchain-core<0.3
+langchain-community<0.3
+
+# Instala a biblioteca do Google (que funciona com as versões acima)
 langchain-google-genai
+
+# --- O resto das nossas bibliotecas ---
 pydantic
 faiss-cpu
 google-generativeai
