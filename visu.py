@@ -128,7 +128,7 @@ if not df.empty:
         df['id'] = pd.to_numeric(df['id'], errors='coerce')
         df = df.sort_values(by='id').reset_index(drop=True)
    
-    st.write(f"Base de dados do CT mestre com {len(df)} trabalhos analisados.")
+    st.write(f"Base de dados do CT com {len(df)} trabalhos analisados.")
     
     # --- FILTROS (Seu código original) ---
     st.sidebar.header("Filtros") 
@@ -265,7 +265,8 @@ if not df.empty:
     # --- NOVO: ABA DO ASSISTENTE DE IA (Versão Manual) ---
         with tab_ia:
             st.header("🤖 Converse com os Resumos")
-            st.write("Faça perguntas em linguagem natural sobre os trabalhos (ex: 'Quais trabalhos mencionam biologia?' ou 'Liste os resumos sobre engenharia civil').")
+            #st.write("Faça perguntas em linguagem natural sobre os trabalhos (ex: 'Quais trabalhos mencionam biologia?' ou 'Liste os resumos sobre engenharia civil').")
+            st.write("Faça perguntas em linguagem natural sobre os trabalhos.")
             st.info("Nota: O assistente usa a base de dados *completa*, não os dados filtrados na barra lateral.")
             
             pergunta_usuario = st.text_input("Sua pergunta:")
@@ -322,4 +323,5 @@ if not df.empty:
 
 # --- FIM DO IF (Seu código original) ---
 else:
+
     st.warning("A base de dados não foi carregada. Verifique os erros acima.")
