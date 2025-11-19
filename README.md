@@ -46,7 +46,7 @@ O sistema processa dados brutos extraídos dos cadernos de resumos em PDF (Dispo
 ├── extrac_resumos.py         # Script de extração dos resumos do PDF
 ├── extrac_sessoes.py         # Script de extração da programação
 ├── merge.py                  # Script de unificação das bases
-├── visu_com_ia.py            # Aplicação Principal (Streamlit + IA)
+├── visu.py            # Aplicação Principal (Streamlit + IA)
 ├── requirements.txt          # Lista de dependências do projeto
 ├── runtime.txt               # Configuração da versão Python para Deploy
 └── README.md                 # Documentação do projeto
