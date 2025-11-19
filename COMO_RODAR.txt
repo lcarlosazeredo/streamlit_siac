@@ -8,7 +8,7 @@ fluxo de execucao para processar os dados e rodar o sistema.
 ---------------------------------------------------------------------
 1. O PIPELINE DE PROCESSAMENTO DE DADOS (SCRIPTS)
 ---------------------------------------------------------------------
-Estes scripts transformam os PDFs brutos na base de dados final (CSV).
+Estes scripts transformam os PDFs brutos(https://sistemas2.macae.ufrj.br/siac/paginainicial/index) na base de dados final (CSV).
 Se voce precisa atualizar os dados, rode-os nesta ordem exata:
 
 [PASSO 1] python extrac_sessoes.py
@@ -93,4 +93,5 @@ OBSERVACOES IMPORTANTES
    ->Rode o app
 
    Obs.: Da pra obter a chave API de graça em 'https://aistudio.google.com/'
+
 
