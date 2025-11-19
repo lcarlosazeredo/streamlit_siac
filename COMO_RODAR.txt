@@ -1,0 +1,92 @@
+=====================================================================
+DOCUMENTACAO DO PROJETO SIAC - ESTRUTURA DE ARQUIVOS E COMO RODAR
+=====================================================================
+
+Este documento explica a funcao de cada arquivo no repositorio e o 
+fluxo de execucao para processar os dados e rodar o sistema.
+
+---------------------------------------------------------------------
+1. O PIPELINE DE PROCESSAMENTO DE DADOS (SCRIPTS)
+---------------------------------------------------------------------
+Estes scripts transformam os PDFs brutos na base de dados final (CSV).
+Se voce precisa atualizar os dados, rode-os nesta ordem exata:
+
+[PASSO 1] python extrac_sessoes.py
+   - O que faz: Le o PDF "2025_CT-PROG_SESSOES.pdf".
+   - Funcao: Usa Regex para extrair ID, horario, local e modalidade.
+   - Gera: "programacao_siac_ct_FINAL.csv".
+
+[PASSO 2] python extrac_resumos.py
+   - O que faz: Le o PDF "2025_CT-CAD_RESUMOS.pdf".
+   - Funcao: Separa Titulo, Autores, Orientadores, Resumo e Bibliografia.
+   - Gera: "resumos_siac_ct_FINAL.csv".
+
+[PASSO 3] python merge.py
+   - O que faz: Cruza as tabelas do Passo 1 e 2.
+   - Funcao: Une tudo usando o ID do trabalho. Apenas trabalhos que estao
+     em ambos os PDFs sao mantidos.
+   - Gera: "BASE_MESTRE_SIAC_CT_FINAL.csv" (O ARQUIVO FINAL).
+
+---------------------------------------------------------------------
+2. ARQUIVOS DE DADOS
+---------------------------------------------------------------------
+* 2025_CT-CAD_RESUMOS.pdf e 2025_CT-PROG_SESSOES.pdf:
+  Fontes originais (Input).
+
+* programacao_siac_ct_FINAL.csv; "resumos_siac_ct_FINAL.csv":
+  Arquivos intermediarios(podem ser ignorados, desde que os scripts que os geram estejam corretos)
+
+* BASE_MESTRE_SIAC_CT_FINAL.csv:
+  A BASE PRINCIPAL. O dashboard le este arquivo. Ele deve estar sempre
+  na mesma pasta do script do aplicativo.
+
+---------------------------------------------------------------------
+3. UTILITARIOS E CONFIGURACAO
+---------------------------------------------------------------------
+* check_models.py:
+  Script para testar a API do Google Gemini. Use para ver se sua chave
+  esta funcionando e quais modelos voce tem acesso.
+
+* .gitignore:
+  Arquivo de seguranca do Git. Impede o envio de senhas e chaves para
+  o GitHub.
+
+---------------------------------------------------------------------
+4. COMO RODAR O APLICATIVO
+---------------------------------------------------------------------
+Para rodar o site, voce precisa ter o arquivo "requirements.txt" e a 
+base de dados "BASE_MESTRE_SIAC_CT_FINAL.csv" na mesma pasta.
+
+OPCAO A: VERSAO COM IA (DASHBOARD + IA)
+-----------------------------------------
+Esta versao inclui o Chatbot. Requer a chave de API.
+Arquivo: visu.py
+
+COMANDO DE EXECUCAO:
+python -m streamlit run visu.py
+
+
+OPCAO B: VERSAO SEM IA (APENAS DASHBOARD)
+---------------------------------------
+Esta versao tem apenas os graficos e filtros (sem IA). 
+Nao precisa de chave de API para rodar.
+Arquivo: visu_sem_ia.py
+
+COMANDO DE EXECUCAO:
+python -m streamlit run visu_sem_ia.py
+
+---------------------------------------------------------------------
+OBSERVACOES IMPORTANTES
+---------------------------------------------------------------------
+1. Ambiente Virtual: 
+   Recomenda-se usar um venv (.venv). Pra nao ter problema com as 
+   versoes das bibliotecas.(Principalmente para a Opcao A)
+   ->Crie o ambiente: 'python -m venv .venv'
+   ->Ative: '.venv\Scripts\activate'
+   ->Instale o que tem em requirements: 'python -m pip install -r requirements.txt'
+   Obs.: Isso serve para rodar local. Usando o git+streamlit não precisa.
+   
+2. Chave de API (Apenas para a Opcao A): 
+   ->Crie a pasta ".streamlit" e o arquivo "secrets.toml" contendo esta única linha: "GOOGLE_API_KEY = "SUA_CHAVE"".
+   ->Coloque a chave do Google para a IA funcionar, em "SUA_CHAVE".
+   Obs.: Da pra obter a chave API de graça em 'https://aistudio.google.com/'
