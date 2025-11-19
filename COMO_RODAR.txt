@@ -82,11 +82,12 @@ OBSERVACOES IMPORTANTES
    Recomenda-se usar um venv (.venv). Pra nao ter problema com as 
    versoes das bibliotecas.(Principalmente para a Opcao A)
    ->Crie o ambiente: 'python -m venv .venv'
-   ->Ative: '.venv\Scripts\activate'
+   ->Ative ele: '.venv\Scripts\activate'
    ->Instale o que tem em requirements: 'python -m pip install -r requirements.txt'
    Obs.: Isso serve para rodar local. Usando o git+streamlit não precisa.
    
 2. Chave de API (Apenas para a Opcao A): 
    ->Crie a pasta ".streamlit" e o arquivo "secrets.toml" contendo esta única linha: "GOOGLE_API_KEY = "SUA_CHAVE"".
    ->Coloque a chave do Google para a IA funcionar, em "SUA_CHAVE".
+
    Obs.: Da pra obter a chave API de graça em 'https://aistudio.google.com/'
