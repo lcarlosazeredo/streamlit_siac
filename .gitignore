@@ -209,7 +209,7 @@ __marimo__/
 # Ignorar o ambiente virtual
 .venv/
 
-# Ignorar a pasta de segredos! NUNCA envie sua chave de API!
+# Ignorar a pasta com a chave de API!
 .streamlit/secrets.toml
 
 # Ignorar caches do Python
