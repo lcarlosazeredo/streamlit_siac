@@ -1,5 +1,5 @@
-# python -m streamlit run visu_geral.py
-# app.py (VERSÃO GERAL - TODAS AS ORIGENS + WORDCLOUD)
+# python -m streamlit run visuu.py
+# app.pY
 
 import streamlit as st
 import pandas as pd
