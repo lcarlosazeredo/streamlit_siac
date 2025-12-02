@@ -2,97 +2,105 @@
 DOCUMENTACAO DO PROJETO SIAC - ESTRUTURA DE ARQUIVOS E COMO RODAR
 =====================================================================
 
-Este documento explica a funcao de cada arquivo no repositorio e o 
-fluxo de execucao para processar os dados e rodar o sistema.
+Este documento explica a função de cada arquivo no repositório e o 
+fluxo de execução para processar os dados e rodar o sistema.
 
 ---------------------------------------------------------------------
-1. O PIPELINE DE PROCESSAMENTO DE DADOS (SCRIPTS)
+1. O PIPELINE DE PROCESSAMENTO DE DADOS (AUTOMATIZADO)
 ---------------------------------------------------------------------
-Estes scripts transformam os PDFs brutos (https://sistemas2.macae.ufrj.br/siac/paginainicial/index) na base de dados final (CSV).
-Se voce precisa atualizar os dados, rode-os nesta ordem exata:
+O processamento é centralizado no script "pipeline_geral.py".
+Ele gerencia automaticamente a extração para todos os centros definidos
+(CAXIAS, CCJE, CCMN, CCS, CFCH, CLA, CT, FCC, MACAE).
 
-[PASSO 1] python extrac_sessoes.py
-   - O que faz: Le o PDF "2025_CT-PROG_SESSOES.pdf".
-   - Funcao: Usa Regex para extrair ID, horario, local e modalidade.
-   - Gera: "programacao_siac_ct_FINAL.csv".
-
-[PASSO 2] python extrac_resumos.py
-   - O que faz: Le o PDF "2025_CT-CAD_RESUMOS.pdf".
-   - Funcao: Separa Titulo, Autores, Orientadores, Resumo e Bibliografia.
-   - Gera: "resumos_siac_ct_FINAL.csv".
-
-[PASSO 3] python merge.py
-   - O que faz: Cruza as tabelas do Passo 1 e 2.
-   - Funcao: Une tudo usando o ID do trabalho. Apenas trabalhos que estao
-     em ambos os PDFs sao mantidos.
-   - Gera: "BASE_MESTRE_SIAC_CT_FINAL.csv" (O ARQUIVO FINAL).
+[PASSO ÚNICO] python pipeline_geral.py
+   - O que faz: 
+     1. Percorre a lista de centros/origens.
+     2. Chama internamente os módulos de extração (Sessões e Resumos) para cada centro.
+     3. Gera os CSVs individuais na pasta 'pdfs/'.
+     4. Unifica todos os dados em um arquivo mestre na raiz do projeto.
+   - Gera: "BASE_SIAC_UFRJ_COMPLETA.csv" (O ARQUIVO FINAL).
 
 ---------------------------------------------------------------------
-2. ARQUIVOS DE DADOS
+1.1 DETALHAMENTO DOS SCRIPTS AUXILIARES (MODULOS)
 ---------------------------------------------------------------------
-* 2025_CT-CAD_RESUMOS.pdf e 2025_CT-PROG_SESSOES.pdf:
-  Fontes originais (Input).
+Abaixo estão os detalhes técnicos de entrada, processamento e saída de 
+cada etapa do pipeline:
 
-* programacao_siac_ct_FINAL.csv; "resumos_siac_ct_FINAL.csv":
-  Arquivos intermediarios(podem ser ignorados, desde que os scripts que os geram estejam corretos)
+A) extrac_sessoes.py (Extração da Grade)
+   - Entrada: "pdfs/2025_{SIGLA}-PROG_SESSOES.pdf"
+   - Função: Lê a programação linear, identificando blocos de sessão e
+     atribuindo os dados de contexto a cada trabalho listado.
+   - Valores Extraídos (Colunas):
+     ['id', 'tema', 'titulo', 'data', 'horario', 'local'].
+   - Arquivo de Saída: "pdfs/programacao_siac_{sigla_minuscula}_FINAL.csv".
 
-* BASE_MESTRE_SIAC_CT_FINAL.csv:
-  A BASE PRINCIPAL. O dashboard le este arquivo. Ele deve estar sempre
-  na mesma pasta do script do aplicativo.
+B) extrac_resumos.py (Extração de Conteúdo)
+   - Entrada: "pdfs/2025_{SIGLA}-CAD_RESUMOS.pdf"
+   - Função: Processa o texto bruto dos resumos, utilizando Regex para
+     capturar metadados que aparecem antes e depois do ID do artigo.
+   - Valores Extraídos (Colunas):
+     ['id', 'titulo', 'autores', 'orientadores', 'modalidade', 
+      'area_principal', 'resumo', 'bibliografia'].
+   - Arquivo de Saída: "pdfs/resumos_siac_{sigla_minuscula}_FINAL.csv".
+
+C) merge.py (Unificação e Limpeza)
+   - Entrada: Os dois CSVs gerados acima (programacao_... + resumos_...).
+   - Função: Realiza um 'Inner Join' pelo 'id'. Remove colunas redundantes
+     (como titulo duplicado) e adiciona a identificação de origem.
+   - Valores Finais: Unifica todas as colunas acima + coluna 'origem'.
+   - Arquivo de Saída: "pdfs/BASE_MESTRE_SIAC_{SIGLA_MAIUSCULA}_FINAL.csv".
+
+---------------------------------------------------------------------
+2. ESTRUTURA DE PASTAS E ARQUIVOS DE DADOS
+---------------------------------------------------------------------
+O sistema exige uma estrutura de pastas específica para funcionar:
+
+RAIZ DO PROJETO/
+ │
+ ├── pdfs/                      <-- PASTA OBRIGATÓRIA
+ │    ├── 2025_CT-PROG_SESSOES.pdf
+ │    ├── 2025_CT-CAD_RESUMOS.pdf
+ │    ├── (Outros PDFs de entrada...)
+ │    └── (Arquivos CSV intermediários são gerados aqui)
+ │
+ ├── pipeline_geral.py          <-- Script principal de ETL
+ ├── visu.py                    <-- Script do Dashboard
+ ├── BASE_SIAC_UFRJ_COMPLETA.csv <-- Base final gerada pelo pipeline
+ └── requirements.txt
+
+* Arquivos de Entrada (Input):
+  Devem estar dentro da pasta 'pdfs/' seguindo o padrão de nome:
+  "2025_{SIGLA}-PROG_SESSOES.pdf" e "2025_{SIGLA}-CAD_RESUMOS.pdf".
+
+* Arquivo Final (Output):
+  "BASE_SIAC_UFRJ_COMPLETA.csv": Criado na raiz após rodar o pipeline.
+  O dashboard lê este arquivo.
 
 ---------------------------------------------------------------------
 3. UTILITARIOS E CONFIGURACAO
 ---------------------------------------------------------------------
-* check_models.py:
-  Script para testar a API do Google Gemini. Use para ver se sua chave
-  esta funcionando e quais modelos voce tem acesso.
-
 * .gitignore:
-  Arquivo de seguranca do Git. Impede o envio de senhas e chaves para
-  o GitHub.
+  Arquivo de segurança do Git. Impede o envio de arquivos temporários,
+  virtuais (.venv) e caches (__pycache__) para o GitHub.
 
 ---------------------------------------------------------------------
-4. COMO RODAR O APLICATIVO
+4. COMO RODAR O APLICATIVO (DASHBOARD)
 ---------------------------------------------------------------------
-Para rodar o site, voce precisa ter o arquivo "requirements.txt" e a 
-base de dados "BASE_MESTRE_SIAC_CT_FINAL.csv" na mesma pasta.
-
-OPCAO A: VERSAO COM IA (DASHBOARD + IA)
------------------------------------------
-Esta versao inclui o Chatbot. Requer a chave de API.
-Arquivo: visu.py
+Para rodar o site, precisa ter o arquivo "requirements.txt" instalado
+e a base de dados "BASE_SIAC_UFRJ_COMPLETA.csv" na mesma pasta.
 
 COMANDO DE EXECUCAO:
 python -m streamlit run visu.py
 
-
-OPCAO B: VERSAO SEM IA (APENAS DASHBOARD)
----------------------------------------
-Esta versao tem apenas os graficos e filtros (sem IA). 
-Nao precisa de chave de API para rodar.
-Arquivo: visu_sem_ia.py
-
-COMANDO DE EXECUCAO:
-python -m streamlit run visu_sem_ia.py
-
 ---------------------------------------------------------------------
 OBSERVACOES IMPORTANTES
 ---------------------------------------------------------------------
-1. Ambiente Virtual: 
-   Recomenda-se usar um venv (.venv). Pra nao ter problema com as 
-   versoes das bibliotecas.(Principalmente para a Opcao A)
-   ->Crie o ambiente: 'python -m venv .venv'
-   ->Ative ele: '.venv\Scripts\activate'
-   ->Instale o que tem em requirements: 'python -m pip install -r requirements.txt'
-   ->Rode o app
-   Obs.: Isso serve para rodar local. Usando o git+streamlit não precisa.
-   
-2. Chave de API (Apenas para a Opcao A): 
-   ->Crie a pasta ".streamlit" e o arquivo "secrets.toml" contendo esta única linha: "GOOGLE_API_KEY = "SUA_CHAVE"".
-   ->Coloque a chave do Google para a IA funcionar, em "SUA_CHAVE".
-   ->Rode o app
-
-   Obs.: Da pra obter a chave API de graça em 'https://aistudio.google.com/'
-
-
-
+Ambiente Virtual:   
+    Recomenda-se usar um venv (.venv) para isolar as dependências.
+    -> Crie o ambiente: 'python -m venv .venv'
+    -> Ative (Windows): '.venv\Scripts\activate'
+    -> Ative (Linux/Mac): 'source .venv/bin/activate'
+    -> Instale as dependências: 'python -m pip install -r requirements.txt'
+    
+Dependências principais:
+    - pandas, streamlit, matplotlib, wordcloud, nltk, plotly, pymupdf (fitz).
