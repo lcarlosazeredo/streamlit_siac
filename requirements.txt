@@ -1,4 +1,4 @@
-#matplotlib
+matplotlib
 wordcloud
 nltk
 PyMuPDF
@@ -16,4 +16,5 @@ plotly
 #pydantic
 #faiss-cpu
 #google-generativeai
+
 
