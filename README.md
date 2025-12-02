@@ -1,52 +1,55 @@
-# streamlit_siac
-
+# Análise de Dados SIAC 2025 (UFRJ Completa)
 
 ## Sobre o Projeto
 
-Este projeto é uma aplicação web interativa desenvolvida para analisar, visualizar e explorar os trabalhos acadêmicos apresentados na **SIAC 2025 (Semana de Integração Acadêmica da UFRJ)**.
+Este projeto é uma aplicação de Engenharia de Dados e Visualização (Dashboard) desenvolvida para extrair, processar e analisar os trabalhos acadêmicos apresentados na **SIAC 2025 (Semana de Integração Acadêmica da UFRJ)**.
 
-O sistema processa dados brutos extraídos dos cadernos de resumos em PDF (Disponível em: **https://sistemas2.macae.ufrj.br/siac/paginainicial/index**) e oferece uma interface amigável para filtragem, análise estatística e uma funcionalidade de **Chat com seus Dados (RAG)**, onde uma Inteligência Artificial responde perguntas sobre os trabalhos baseada no conteúdo dos resumos.
+Este sistema implementa um **Pipeline de ETL (Extract, Transform, Load)** automatizado que consolida dados de múltiplos centros (CAXIAS, CCJE, CCMN, CCS, CFCH, CLA, CT, FCC, MACAE) em uma base unificada.
 
+O sistema processa dados brutos extraídos dos PDFs de **Programação** e **Cadernos de Resumos** (Disponível em: https://sistemas2.macae.ufrj.br/siac/paginainicial/index) e oferece uma interface interativa para exploração estatística e textual.
 
 ## ✨ Funcionalidades
 
-* **📊 Dashboard Interativo:**
-    * Visualização de KPIs (Total de trabalhos, áreas, modalidades, locais).
-    * Gráficos de distribuição por Tema e Modalidade.
-    * Ranking dos Orientadores com mais trabalhos.
+* **📊 Dashboard Interativo (Streamlit):**
+    * [cite_start]**KPIs Dinâmicos:** Contagem em tempo real de trabalhos, origens, áreas, modalidades e locais[cite: 1].
+    * [cite_start]**Análise Temporal:** Mapa de Calor (Heatmap) interativo mostrando a densidade de apresentações por Dia da Semana vs. Horário[cite: 1].
+    * [cite_start]**Processamento de Linguagem Natural (NLP):** Geração de **Nuvem de Palavras** (WordCloud) baseada nos resumos filtrados, com remoção de stopwords em português[cite: 1].
+    * [cite_start]**Rankings:** Top 10 temas mais frequentes e Top 10 orientadores com mais trabalhos[cite: 1].
+
+* **⚙️ Pipeline de Dados Automatizado:**
+    * [cite_start]Extração inteligente de PDFs usando "Máquina de Estados" para associar horários e locais a múltiplos trabalhos.
+    * [cite_start]Uso de Regex (Expressões Regulares) para mineração de textos complexos (Resumos, Bibliografias)[cite: 2].
+    * [cite_start]Unificação automática de bases de dados de diferentes centros[cite: 4].
+
 * **🔎 Filtros Avançados:**
-    * Filtragem dinâmica por Tema, Modalidade, Área Principal e Local.
-    * Busca textual por Título ou Autor.
-* **🤖 Assistente de IA (RAG):**
-    * Integração com **Google Gemini 1.5 Pro**.
-    * Busca semântica (Vetorial) usando **FAISS**.
-    * Permite perguntas em linguagem natural (ex: *"Quais trabalhos falam sobre sustentabilidade?"* ou *"Liste os orientadores de engenharia elétrica"*).
-* **📄 Leitor de Resumos:**
-    * Visualização detalhada de autores, orientadores, resumo e bibliografia de cada trabalho.
+    * [cite_start]Filtragem multidimensional: Origem (Centro), Tema, Modalidade, Área Principal e Local[cite: 1].
+    * [cite_start]Busca textual global por Título, Autor ou Orientador[cite: 1].
 
+## 🛠 Tecnologias Utilizadas
 
-## Tecnologias Utilizadas
-
-* **Linguagem:** Python 3.11
+* **Linguagem:** Python 3.x
+* **Orquestração ETL:** Script Python autônomo (`pipeline_geral.py`)
 * **Frontend/Dashboard:** Streamlit
 * **Manipulação de Dados:** Pandas
-* **Extração de Dados (PDF):** PyMuPDF (fitz), Regex (Expressões Regulares)
-* **Inteligência Artificial & LLM:**
-    * LangChain (Orquestração)
-    * Google Generative AI (Gemini & Embeddings)
-    * FAISS (Banco de Dados Vetorial)
-
+* **Extração de Dados (PDF):** PyMuPDF (fitz), Regex
+* **Visualização:** * Matplotlib (Gráficos de barras e Nuvem de Palavras)
+    * Plotly Express (Mapa de Calor Interativo)
+    * WordCloud & NLTK (Processamento de texto)
 
 ## 📂 Estrutura do Projeto
 
+A estrutura de arquivos é organizada para separar a extração (ETL) da visualização:
+
 ```text
-├── .streamlit/
-│   └── secrets.toml          # Chaves de API (NÃO INCLUÍDO NO REPOSITÓRIO)
-├── BASE_MESTRE_SIAC_CT_FINAL.csv # Base de dados processada (Fonte do Dashboard)
-├── extrac_resumos.py         # Script de extração dos resumos do PDF
-├── extrac_sessoes.py         # Script de extração da programação
-├── merge.py                  # Script de unificação das bases
-├── visu.py            # Aplicação Principal (Streamlit + IA)
-├── requirements.txt          # Lista de dependências do projeto
-├── runtime.txt               # Configuração da versão Python para Deploy
-└── README.md                 # Documentação do projeto
+├── pdfs/                       # [OBRIGATÓRIO] Pasta com os PDFs de entrada e CSVs intermediários
+│   ├── 2025_CT-PROG_SESSOES.pdf
+│   ├── 2025_CT-CAD_RESUMOS.pdf
+│   └── ...
+├── pipeline_geral.py           # Script Mestre: Executa a extração de TODOS os centros [cite: 4]
+├── extrac_sessoes.py           # Módulo: Extrai grade de horários 
+├── extrac_resumos.py           # Módulo: Extrai textos dos resumos [cite: 2]
+├── merge.py                    # Módulo: Unifica e limpa os dados [cite: 4]
+├── visu.py                     # Aplicação do Dashboard (Streamlit) [cite: 1]
+├── BASE_SIAC_UFRJ_COMPLETA.csv # Base Final (Gerada automaticamente) [cite: 4]
+├── requirements.txt            # Dependências
+└── README.md                   # Documentação
