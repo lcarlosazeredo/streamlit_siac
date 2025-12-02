@@ -120,6 +120,7 @@ if not df.empty:
     local_selecionado = st.sidebar.selectbox("Filtrar por Local:", locais_unicos)
 
     termo_busca = st.sidebar.text_input("Buscar por Título ou Autor:")
+    termo_busca_orientador = st.sidebar.text_input("Buscar por Orientador:")
 
     # --- LÓGICA DE FILTRAGEM ---
     df_filtrado = df.copy() 
@@ -143,6 +144,11 @@ if not df.empty:
         df_filtrado = df_filtrado[
             df_filtrado['titulo'].str.contains(termo_busca, case=False, na=False) |
             df_filtrado['autores'].str.contains(termo_busca, case=False, na=False)
+        ]
+
+    if termo_busca_orientador:
+        df_filtrado = df_filtrado[
+            df_filtrado['orientadores'].str.contains(termo_busca_orientador, case=False, na=False)
         ]
 
     # --- EXIBIR OS RESULTADOS ---
@@ -203,7 +209,20 @@ if not df.empty:
                 st.write("Trabalhos por Modalidade")
                 contagem_modalidade = df_filtrado['modalidade'].value_counts()
                 st.bar_chart(contagem_modalidade)
+
+            st.write("---")    
+            st.subheader("Top 10 Orientadores (por nº de trabalhos)")
             
+            # Limpeza: Alguns orientadores podem ser "Não Definido"
+            orientadores_limpos = df_filtrado[df_filtrado['orientadores'] != "Não Definido"]
+            
+            if not orientadores_limpos.empty:
+                # O "Arquivista" (Pandas) fazendo a contagem
+                contagem_orientadores = orientadores_limpos['orientadores'].value_counts().head(10)
+                st.bar_chart(contagem_orientadores)
+            else:
+                st.write("Nenhum orientador definido nos dados filtrados.")
+
             st.write("---")
             st.subheader("Mapa de Calor: Concentração de Sessões")
 
