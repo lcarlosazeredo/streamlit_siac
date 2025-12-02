@@ -1,4 +1,4 @@
-# Análise de Dados SIAC 2025 (UFRJ Completa)
+# Análise de Dados SIAC 2025
 
 ## Sobre o Projeto
 
