@@ -11,23 +11,23 @@ O sistema processa dados brutos extraídos dos PDFs de **Programação** e **Cad
 ## ✨ Funcionalidades
 
 * **📊 Dashboard Interativo (Streamlit):**
-    * [cite_start]**KPIs Dinâmicos:** Contagem em tempo real de trabalhos, origens, áreas, modalidades e locais[cite: 1].
-    * [cite_start]**Análise Temporal:** Mapa de Calor (Heatmap) interativo mostrando a densidade de apresentações por Dia da Semana vs. Horário[cite: 1].
-    * [cite_start]**Processamento de Linguagem Natural (NLP):** Geração de **Nuvem de Palavras** (WordCloud) baseada nos resumos filtrados, com remoção de stopwords em português[cite: 1].
-    * [cite_start]**Rankings:** Top 10 temas mais frequentes e Top 10 orientadores com mais trabalhos[cite: 1].
+    * **KPIs Dinâmicos:** Contagem em tempo real de trabalhos, origens, áreas, modalidades e locais[cite: 1].
+    * **Análise Temporal:** Mapa de Calor (Heatmap) interativo mostrando a densidade de apresentações por Dia da Semana vs. Horário[cite: 1].
+    * **Processamento de Linguagem Natural (NLP):** Geração de **Nuvem de Palavras** (WordCloud) baseada nos resumos filtrados, com remoção de stopwords em português[cite: 1].
+    * **Rankings:** Top 10 temas mais frequentes e Top 10 orientadores com mais trabalhos[cite: 1].
 
 * **⚙️ Pipeline de Dados Automatizado:**
-    * [cite_start]Extração inteligente de PDFs usando "Máquina de Estados" para associar horários e locais a múltiplos trabalhos.
-    * [cite_start]Uso de Regex (Expressões Regulares) para mineração de textos complexos (Resumos, Bibliografias)[cite: 2].
-    * [cite_start]Unificação automática de bases de dados de diferentes centros[cite: 4].
+    * Extração inteligente de PDFs usando "Máquina de Estados" para associar horários e locais a múltiplos trabalhos.
+    * Uso de Regex (Expressões Regulares) para mineração de textos complexos (Resumos, Bibliografias)[cite: 2].
+    * Unificação automática de bases de dados de diferentes centros[cite: 4].
 
 * **🔎 Filtros Avançados:**
-    * [cite_start]Filtragem multidimensional: Origem (Centro), Tema, Modalidade, Área Principal e Local[cite: 1].
-    * [cite_start]Busca textual global por Título, Autor ou Orientador[cite: 1].
+    * Filtragem multidimensional: Origem (Centro), Tema, Modalidade, Área Principal e Local[cite: 1].
+    * Busca textual global por Título, Autor ou Orientador[cite: 1].
 
 ## 🛠 Tecnologias Utilizadas
 
-* **Linguagem:** Python 3.x
+* **Linguagem:** Python 3.1
 * **Orquestração ETL:** Script Python autônomo (`pipeline_geral.py`)
 * **Frontend/Dashboard:** Streamlit
 * **Manipulação de Dados:** Pandas
@@ -45,11 +45,11 @@ A estrutura de arquivos é organizada para separar a extração (ETL) da visuali
 │   ├── 2025_CT-PROG_SESSOES.pdf
 │   ├── 2025_CT-CAD_RESUMOS.pdf
 │   └── ...
-├── pipeline_geral.py           # Script Mestre: Executa a extração de TODOS os centros [cite: 4]
+├── pipeline_geral.py           # Script Mestre: Executa a extração de TODOS os centros
 ├── extrac_sessoes.py           # Módulo: Extrai grade de horários 
-├── extrac_resumos.py           # Módulo: Extrai textos dos resumos [cite: 2]
-├── merge.py                    # Módulo: Unifica e limpa os dados [cite: 4]
-├── visu.py                     # Aplicação do Dashboard (Streamlit) [cite: 1]
-├── BASE_SIAC_UFRJ_COMPLETA.csv # Base Final (Gerada automaticamente) [cite: 4]
+├── extrac_resumos.py           # Módulo: Extrai textos dos resumos
+├── merge.py                    # Módulo: Unifica e limpa os dados
+├── visu.py                     # Aplicação do Dashboard (Streamlit)
+├── BASE_SIAC_UFRJ_COMPLETA.csv # Base Final (Gerada automaticamente)
 ├── requirements.txt            # Dependências
 └── README.md                   # Documentação
