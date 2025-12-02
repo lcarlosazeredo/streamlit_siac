@@ -1,18 +1,18 @@
-# Força as versões < 0.3 para compatibilidade com a Google
-langchain<0.3
-langchain-core<0.3
-langchain-community<0.3
-
-# Instala a biblioteca do Google
-langchain-google-genai
-
-# --- Outras bibliotecas ---
-pydantic
-faiss-cpu
-google-generativeai
 matplotlib
 wordcloud
 nltk
 PyMuPDF
 plotly
 
+# Força as versões < 0.3 para compatibilidade com a Google
+#langchain<0.3
+#langchain-core<0.3
+#langchain-community<0.3
+
+# Instala a biblioteca do Google
+#langchain-google-genai
+
+# --- Outras bibliotecas ---
+#pydantic
+#faiss-cpu
+#google-generativeai
