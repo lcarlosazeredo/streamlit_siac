@@ -11,19 +11,19 @@ O sistema processa dados brutos extraídos dos PDFs de **Programação** e **Cad
 ## ✨ Funcionalidades
 
 * **📊 Dashboard Interativo (Streamlit):**
-    * **KPIs Dinâmicos:** Contagem em tempo real de trabalhos, origens, áreas, modalidades e locais[cite: 1].
-    * **Análise Temporal:** Mapa de Calor (Heatmap) interativo mostrando a densidade de apresentações por Dia da Semana vs. Horário[cite: 1].
-    * **Processamento de Linguagem Natural (NLP):** Geração de **Nuvem de Palavras** (WordCloud) baseada nos resumos filtrados, com remoção de stopwords em português[cite: 1].
-    * **Rankings:** Top 10 temas mais frequentes e Top 10 orientadores com mais trabalhos[cite: 1].
+    * **KPIs Dinâmicos:** Contagem em tempo real de trabalhos, origens, áreas, modalidades e locais.
+    * **Análise Temporal:** Mapa de Calor (Heatmap) interativo mostrando a densidade de apresentações por Dia da Semana vs. Horário.
+    * **Processamento de Linguagem Natural (NLP):** Geração de **Nuvem de Palavras** (WordCloud) baseada nos resumos filtrados, com remoção de stopwords em português.
+    * **Rankings:** Top 10 temas mais frequentes e Top 10 orientadores com mais trabalhos.
 
 * **⚙️ Pipeline de Dados Automatizado:**
     * Extração inteligente de PDFs usando "Máquina de Estados" para associar horários e locais a múltiplos trabalhos.
-    * Uso de Regex (Expressões Regulares) para mineração de textos complexos (Resumos, Bibliografias)[cite: 2].
-    * Unificação automática de bases de dados de diferentes centros[cite: 4].
+    * Uso de Regex (Expressões Regulares) para mineração de textos complexos (Resumos, Bibliografias).
+    * Unificação automática de bases de dados de diferentes centros.
 
 * **🔎 Filtros Avançados:**
-    * Filtragem multidimensional: Origem (Centro), Tema, Modalidade, Área Principal e Local[cite: 1].
-    * Busca textual global por Título, Autor ou Orientador[cite: 1].
+    * Filtragem multidimensional: Origem (Centro), Tema, Modalidade, Área Principal e Local.
+    * Busca textual global por Título, Autor ou Orientador.
 
 ## 🛠 Tecnologias Utilizadas
 
