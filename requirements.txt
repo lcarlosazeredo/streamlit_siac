@@ -2,7 +2,7 @@ matplotlib
 wordcloud
 nltk
 PyMuPDF
-#plotly
+plotly
 
 # Força as versões < 0.3 para compatibilidade com a Google
 #langchain<0.3
@@ -16,6 +16,7 @@ PyMuPDF
 #pydantic
 #faiss-cpu
 #google-generativeai
+
 
 
 
