@@ -1,4 +1,4 @@
-# python -m streamlit run visuu.py
+# python -m streamlit run visu.py
 # app.pY
 
 import streamlit as st
@@ -17,6 +17,15 @@ except LookupError:
 
 # Configuração da página
 st.set_page_config(page_title="Análise SIAC (UFRJ)", layout="wide")
+
+st.markdown("""
+<style> 
+    /* Aumenta o tamanho da fonte das abas */
+    .stTabs [data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {
+        font-size: 24px;
+    }     
+</style>
+""", unsafe_allow_html=True)
 
 # --- ARQUIVO MESTRE ---
 ARQUIVO_MESTRE = "BASE_SIAC_UFRJ_COMPLETA.csv"
