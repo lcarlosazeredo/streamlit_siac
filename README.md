@@ -27,7 +27,7 @@ O sistema processa dados brutos extraídos dos PDFs de **Programação** e **Cad
 
 ## 🛠 Tecnologias Utilizadas
 
-* **Linguagem:** Python 3.1
+* **Linguagem:** Python 3.11
 * **Orquestração ETL:** Script Python autônomo (`pipeline_geral.py`)
 * **Frontend/Dashboard:** Streamlit
 * **Manipulação de Dados:** Pandas
